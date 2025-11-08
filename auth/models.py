@@ -6,8 +6,11 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False, index=True)
-    password_hash = db.Column(db.String(255), nullable=False)
+    # allow nullable password_hash for seeded users without passwords
+    password_hash = db.Column(db.String(255), nullable=True)
     full_name = db.Column(db.String(255))
+    # phone column added to match seed CSV
+    phone = db.Column(db.String(32))
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 

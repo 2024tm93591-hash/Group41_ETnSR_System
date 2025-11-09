@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  # ==========================
+  # Catalog Service (Java - Spring Boot)
+  # ==========================
+  catalog-service:
+    build:
+      context: ./catalog-service
+    image: catalog-service:latest
+    container_name: catalog-service
+    ports:
+      - "8080:8080"

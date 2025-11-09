@@ -47,6 +47,10 @@ services:
       DB_NAME: catalog_db
       DB_USER: app_user
       DB_PASS: StrongP@ssw0rd!
+      # Spring Boot datasource (connects to catalog-db container)
+      SPRING_DATASOURCE_URL: "jdbc:sqlserver://catalog-db:1433;databaseName=catalog_db"
+      SPRING_DATASOURCE_USERNAME: "app_user"
+      SPRING_DATASOURCE_PASSWORD: "StrongP@ssw0rd!"
     depends_on:
       catalog-db:
         condition: service_healthy
@@ -113,6 +117,10 @@ services:
       DB_NAME: order_db
       DB_USER: app_user
       DB_PASS: StrongP@ssw0rd!
+      # Spring Boot datasource (connects to order-db container)
+      SPRING_DATASOURCE_URL: "jdbc:sqlserver://order-db:1433;databaseName=order_db"
+      SPRING_DATASOURCE_USERNAME: "app_user"
+      SPRING_DATASOURCE_PASSWORD: "StrongP@ssw0rd!"
     depends_on:
       order-db:
         condition: service_healthy
@@ -148,6 +156,10 @@ services:
       DB_NAME: payment_db
       DB_USER: app_user
       DB_PASS: StrongP@ssw0rd!
+      # Spring Boot datasource (connects to payment-db container)
+      SPRING_DATASOURCE_URL: "jdbc:sqlserver://payment-db:1433;databaseName=payment_db"
+      SPRING_DATASOURCE_USERNAME: "app_user"
+      SPRING_DATASOURCE_PASSWORD: "StrongP@ssw0rd!"
     depends_on:
       payment-db:
         condition: service_healthy

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seating-db
+  labels:
+    app: seating-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seating-db
+  template:
+    metadata:
+      labels:
+        app: seating-db
+    spec:
+      containers:
+        - name: seating-db
+          image: mcr.microsoft.com/mssql/server:2019-latest
+          ports:
+            - containerPort: 1433
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              value: "StrongP@ssw0rd!"
+          volumeMounts:
+            - name: db-storage
+              mountPath: /var/opt/mssql
+      volumes:
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: seating-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seating-db
+spec:
+  selector:
+    app: seating-db
+  ports:
+    - protocol: TCP
+      port: 1433
+      targetPort: 1433
+  type: ClusterIP

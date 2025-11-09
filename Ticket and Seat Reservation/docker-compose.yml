@@ -19,18 +19,23 @@ services:
         condition: service_healthy
 
   user-db:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    build:
+      context: .
+      dockerfile: db.Dockerfile
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "StrongP@ssw0rd!"
       MSSQL_PID: "Express"
     ports:
       - "1437:1433"
+    volumes:
+      - user-db-data:/var/opt/mssql
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "user-db", "-U", "app_user", "-P", "StrongP@ssw0rd!", "-Q", "SELECT 1"]
+      test: /opt/mssql-tools/bin/sqlcmd -b -V 16 -S localhost -U sa -P "StrongP@ssw0rd!" -Q "SELECT 1" || exit 1
       interval: 10s
-      timeout: 5s
-      retries: 5
+      timeout: 3s
+      retries: 10
+      start_period: 30s
     restart: always
 
   catalog-service:
@@ -56,18 +61,23 @@ services:
         condition: service_healthy
 
   catalog-db:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    build:
+      context: .
+      dockerfile: db.Dockerfile
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "StrongP@ssw0rd!"
       MSSQL_PID: "Express"
     ports:
       - "1433:1433"
+    volumes:
+      - catalog-db-data:/var/opt/mssql
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "catalog-db", "-U", "app_user", "-P", "StrongP@ssw0rd!", "-Q", "SELECT 1"]
+      test: /opt/mssql-tools/bin/sqlcmd -b -V 16 -S localhost -U sa -P "StrongP@ssw0rd!" -Q "SELECT 1" || exit 1
       interval: 10s
-      timeout: 5s
-      retries: 5
+      timeout: 3s
+      retries: 10
+      start_period: 30s
     restart: always
 
   seating-service:
@@ -89,18 +99,23 @@ services:
         condition: service_healthy
 
   seating-db:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    build:
+      context: .
+      dockerfile: db.Dockerfile
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "StrongP@ssw0rd!"
       MSSQL_PID: "Express"
     ports:
       - "1434:1433"
+    volumes:
+      - seating-db-data:/var/opt/mssql
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "seating-db", "-U", "app_user", "-P", "StrongP@ssw0rd!", "-Q", "SELECT 1"]
+      test: /opt/mssql-tools/bin/sqlcmd -b -V 16 -S localhost -U sa -P "StrongP@ssw0rd!" -Q "SELECT 1" || exit 1
       interval: 10s
-      timeout: 5s
-      retries: 5
+      timeout: 3s
+      retries: 10
+      start_period: 30s
     restart: always
 
   order-service:
@@ -128,18 +143,23 @@ services:
         condition: service_started
 
   order-db:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    build:
+      context: .
+      dockerfile: db.Dockerfile
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "StrongP@ssw0rd!"
       MSSQL_PID: "Express"
     ports:
       - "1435:1433"
+    volumes:
+      - order-db-data:/var/opt/mssql
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "order-db", "-U", "app_user", "-P", "StrongP@ssw0rd!", "-Q", "SELECT 1"]
+      test: /opt/mssql-tools/bin/sqlcmd -b -V 16 -S localhost -U sa -P "StrongP@ssw0rd!" -Q "SELECT 1" || exit 1
       interval: 10s
-      timeout: 5s
-      retries: 5
+      timeout: 3s
+      retries: 10
+      start_period: 30s
     restart: always
 
   payment-service:
@@ -165,18 +185,23 @@ services:
         condition: service_healthy
 
   payment-db:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    build:
+      context: .
+      dockerfile: db.Dockerfile
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "StrongP@ssw0rd!"
       MSSQL_PID: "Express"
     ports:
       - "1436:1433"
+    volumes:
+      - payment-db-data:/var/opt/mssql
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "payment-db", "-U", "app_user", "-P", "StrongP@ssw0rd!", "-Q", "SELECT 1"]
+      test: /opt/mssql-tools/bin/sqlcmd -b -V 16 -S localhost -U sa -P "StrongP@ssw0rd!" -Q "SELECT 1" || exit 1
       interval: 10s
-      timeout: 5s
-      retries: 5
+      timeout: 3s
+      retries: 10
+      start_period: 30s
     restart: always
 
   notification-service:
@@ -217,3 +242,10 @@ services:
         condition: service_healthy
       user-db:
         condition: service_healthy
+
+volumes:
+  user-db-data:
+  catalog-db-data:
+  seating-db-data:
+  order-db-data:
+  payment-db-data:

@@ -8,7 +8,11 @@
 		<version>3.5.7</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+  <groupId>org.springframework.boot</groupId>
   <artifactId>order-service</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>order-service</name>
+  <description>Order Service for ETnSR System</description>
   <packaging>jar</packaging>
 
   <dependencies>
@@ -38,8 +42,17 @@
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>
-      <version>12.2.0.jre17</version>
+      <version>11.2.3.jre17</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

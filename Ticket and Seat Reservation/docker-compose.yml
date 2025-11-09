@@ -40,8 +40,8 @@ services:
 
   catalog-service:
     build:
-      context: .
-      dockerfile: ./catalog-service/Dockerfile
+      context: ./catalog-service/catalog-service
+      dockerfile: Dockerfile
     dns:
       - 8.8.8.8
       - 8.8.4.4
@@ -120,8 +120,8 @@ services:
 
   order-service:
     build:
-      context: .
-      dockerfile: ./order-service/Dockerfile
+      context: ./order-service
+      dockerfile: Dockerfile
     dns:
       - 8.8.8.8
       - 8.8.4.4

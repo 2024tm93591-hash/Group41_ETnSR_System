@@ -22,24 +22,23 @@ public class SeatController {
     }
 
     @GetMapping("/{id}")
-    public Seat getSeatById(@PathVariable Long id) {
+    public Seat getSeatById(@PathVariable String id) {
         return seatRepository.findById(id).orElse(null);
     }
 
     @GetMapping("/event/{eventId}")
-    public List<Seat> getSeatsByEvent(@PathVariable Long eventId) {
+    public List<Seat> getSeatsByEvent(@PathVariable String eventId) {
         return seatRepository.findByEventEventId(eventId);
     }
 
     // ✅ NEW ENDPOINT – used by other services (Python/.NET)
     @GetMapping("/info")
     public List<Seat> getSeatsInfo(@RequestParam("seatIds") String seatIds) {
-        List<Long> ids = Arrays.stream(seatIds.split(","))
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .map(Long::parseLong)
-                .collect(Collectors.toList());
-        return seatRepository.findAllById(ids);
+    List<String> ids = Arrays.stream(seatIds.split(","))
+        .map(String::trim)
+        .filter(s -> !s.isEmpty())
+        .collect(Collectors.toList());
+    return seatRepository.findAllById(ids);
     }
 
     @PostMapping
@@ -48,7 +47,7 @@ public class SeatController {
     }
 
     @PutMapping("/{id}")
-    public Seat updateSeat(@PathVariable Long id, @RequestBody Seat seatDetails) {
+    public Seat updateSeat(@PathVariable String id, @RequestBody Seat seatDetails) {
         Seat seat = seatRepository.findById(id).orElseThrow();
         seat.setSection(seatDetails.getSection());
         seat.setSeatRow(seatDetails.getSeatRow());
@@ -59,7 +58,7 @@ public class SeatController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteSeat(@PathVariable Long id) {
+    public void deleteSeat(@PathVariable String id) {
         seatRepository.deleteById(id);
     }
 }

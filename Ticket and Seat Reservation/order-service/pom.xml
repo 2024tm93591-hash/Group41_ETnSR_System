@@ -22,7 +22,7 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <artifactId>spring-boot-starter-data-mongodb</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -33,17 +33,7 @@
       <artifactId>spring-cloud-starter-openfeign</artifactId>
       <version>4.0.0</version>
     </dependency>
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <!-- Microsoft SQL Server JDBC driver for production DB connectivity -->
-    <dependency>
-      <groupId>com.microsoft.sqlserver</groupId>
-      <artifactId>mssql-jdbc</artifactId>
-      <version>11.2.3.jre17</version>
-    </dependency>
+    <!-- Use MongoDB instead of JPA/H2/MSSQL -->
   </dependencies>
 
   <build>

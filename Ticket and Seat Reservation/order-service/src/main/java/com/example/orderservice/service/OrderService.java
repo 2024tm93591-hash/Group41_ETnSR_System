@@ -7,7 +7,6 @@ import com.example.orderservice.feign.dto.ChargeRequest;
 import com.example.orderservice.feign.dto.ChargeResponse;
 import com.example.orderservice.repository.OrderRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -23,7 +22,6 @@ public class OrderService {
         this.paymentClient = paymentClient;
     }
 
-    @Transactional
     public Order createOrder(PlaceOrderRequest req) {
         Order o = new Order();
         o.setUserId(req.userId);
@@ -51,7 +49,7 @@ public class OrderService {
         orderRepository.save(saved);
 
         String idempotencyKey = UUID.randomUUID().toString();
-        ChargeRequest cr = new ChargeRequest(saved.getId(), saved.getTotal(), "INR", "pm_card_visa");
+    ChargeRequest cr = new ChargeRequest(saved.getId(), saved.getTotal(), "INR", "pm_card_visa");
         ChargeResponse resp = paymentClient.charge(idempotencyKey, cr);
 
         if ("SUCCESS".equalsIgnoreCase(resp.status())) {
@@ -66,9 +64,7 @@ public class OrderService {
         return saved;
     }
 
-	public Optional<Order> findById(Long id) {
-		// TODO Auto-generated method stub
-		return orderRepository.findById(id);
-		//return null;
-	}
+    public Optional<Order> findById(String id) {
+        return orderRepository.findById(id);
+    }
 }

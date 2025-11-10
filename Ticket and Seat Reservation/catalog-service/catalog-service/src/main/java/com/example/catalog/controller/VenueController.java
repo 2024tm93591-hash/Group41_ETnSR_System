@@ -19,9 +19,9 @@ public class VenueController {
     public List<Venue> getAllVenues() { return venueRepository.findAll(); }
 
     @GetMapping("/{id}")
-    public Venue getVenueById(@PathVariable Long id) {
-        return venueRepository.findById(id).orElse(null);
-    }
+       public Venue getVenueById(@PathVariable String id) {
+           return venueRepository.findById(id).orElse(null);
+       }
 
     @GetMapping("/city/{city}")
     public List<Venue> getVenuesByCity(@PathVariable String city) {
@@ -34,8 +34,8 @@ public class VenueController {
     }
 
     @PutMapping("/{id}")
-    public Venue updateVenue(@PathVariable Long id, @RequestBody Venue venueDetails) {
-        Venue venue = venueRepository.findById(id).orElseThrow();
+       public Venue updateVenue(@PathVariable String id, @RequestBody Venue venueDetails) {
+           Venue venue = venueRepository.findById(id).orElseThrow();
         venue.setName(venueDetails.getName());
         venue.setCity(venueDetails.getCity());
         venue.setCapacity(venueDetails.getCapacity());
@@ -43,7 +43,7 @@ public class VenueController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteVenue(@PathVariable Long id) {
-        venueRepository.deleteById(id);
-    }
+       public void deleteVenue(@PathVariable String id) {
+           venueRepository.deleteById(id);
+       }
 }

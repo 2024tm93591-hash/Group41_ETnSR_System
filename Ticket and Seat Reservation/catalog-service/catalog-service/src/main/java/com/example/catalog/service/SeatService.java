@@ -22,12 +22,12 @@ public class SeatService {
     }
 
     // Get seat by ID
-    public Optional<Seat> getSeatById(Long id) {
+    public Optional<Seat> getSeatById(String id) {
         return seatRepository.findById(id);
     }
 
     // Get all seats by event ID
-    public List<Seat> getSeatsByEventId(Long eventId) {
+    public List<Seat> getSeatsByEventId(String eventId) {
         return seatRepository.findByEventEventId(eventId);
     }
 
@@ -37,7 +37,7 @@ public class SeatService {
     }
 
     // Update existing seat
-    public Seat updateSeat(Long id, Seat seatDetails) {
+    public Seat updateSeat(String id, Seat seatDetails) {
         Seat seat = seatRepository.findById(id).orElseThrow(() -> 
             new RuntimeException("Seat not found with id " + id)
         );
@@ -50,7 +50,7 @@ public class SeatService {
     }
 
     // Delete seat by ID
-    public void deleteSeat(Long id) {
+    public void deleteSeat(String id) {
         seatRepository.deleteById(id);
     }
 }

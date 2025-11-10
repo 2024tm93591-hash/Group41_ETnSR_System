@@ -1,32 +1,29 @@
 package com.example.catalog.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "seat")
+@Document(collection = "seats")
 public class Seat {
 
     @Id
-    private Long seatId;
+    private String seatId;
 
-    @ManyToOne
-    @JoinColumn(name = "event_id")
     private Event event;
 
     private String section;
 
-    @Column(name = "seat_row") // renamed from row to seat_row to avoid H2 keyword conflict
     private String seatRow;
 
     private String seatNumber;
     private double price;
 
     // Getters and Setters
-    public Long getSeatId() {
+    public String getSeatId() {
         return seatId;
     }
 
-    public void setSeatId(Long seatId) {
+    public void setSeatId(String seatId) {
         this.seatId = seatId;
     }
 

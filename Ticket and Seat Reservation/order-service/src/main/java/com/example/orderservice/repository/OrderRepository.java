@@ -1,9 +1,9 @@
 package com.example.orderservice.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.example.orderservice.domain.Order;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {}
+public interface OrderRepository extends MongoRepository<Order, String> {}
 
 

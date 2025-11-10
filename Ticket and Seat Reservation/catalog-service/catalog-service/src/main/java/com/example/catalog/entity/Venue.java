@@ -1,25 +1,24 @@
 package com.example.catalog.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
-@Entity
-@Table(name = "venue")
+@Document(collection = "venues")
 public class Venue {
 
     @Id
-    private Long venueId;
+    private String venueId;
 
     private String name;
     private String city;
     private int capacity;
 
-    @OneToMany(mappedBy = "venue")
     private List<Event> events;
 
     // Getters and Setters
-    public Long getVenueId() { return venueId; }
-    public void setVenueId(Long venueId) { this.venueId = venueId; }
+    public String getVenueId() { return venueId; }
+    public void setVenueId(String venueId) { this.venueId = venueId; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

@@ -1,35 +1,33 @@
 package com.example.orderservice.domain;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.*;
 
-@Entity
-@Table(name = "orders")
+@Document(collection = "orders")
 public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	private String id;
 
-    private Long userId; // denormalized user id snapshot reference
+	private String userId; // denormalized user id snapshot reference
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+	private OrderStatus status;
 
-    public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public Long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
@@ -67,10 +65,9 @@ public class Order {
 
 	private BigDecimal total; // seat prices + tax
 
-    private OffsetDateTime createdAt = OffsetDateTime.now();
+	private OffsetDateTime createdAt = OffsetDateTime.now();
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> items = new ArrayList<>();
+	private List<OrderItem> items = new ArrayList<>();
 
     // getters/setters
 }

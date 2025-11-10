@@ -17,10 +17,11 @@ public class RefundController {
     public RefundController(PaymentRepository paymentRepository) { this.paymentRepository = paymentRepository; }
 
     @PostMapping("/{paymentId}")
-    @Transactional
-    public ResponseEntity<?> refund(@PathVariable Long paymentId) {
+    public ResponseEntity<?> refund(@PathVariable String paymentId) {
         Optional<Payment> pOpt = paymentRepository.findById(paymentId);
-        if (pOpt.isEmpty()) return ResponseEntity.notFound().build();
+            if (pOpt.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
         Payment p = pOpt.get();
         if (p.getStatus() != PaymentStatus.SUCCESS) return ResponseEntity.badRequest().body("Only successful payments can be refunded");
         p.setStatus(PaymentStatus.REFUNDED);

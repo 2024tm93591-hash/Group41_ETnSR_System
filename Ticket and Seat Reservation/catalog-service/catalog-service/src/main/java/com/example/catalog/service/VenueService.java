@@ -26,7 +26,7 @@ public class VenueService {
     }
 
     // Get a venue by ID
-    public Venue getVenueById(Long id) {
+    public Venue getVenueById(String id) {
         return repo.findById(id).orElse(null);
     }
 }

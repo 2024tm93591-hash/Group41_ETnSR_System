@@ -1,36 +1,34 @@
 package com.example.paymentservice.domain;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-@Entity
-@Table(name = "payments", indexes = {@Index(name = "idx_idempotency_key", columnList = "idempotencyKey", unique = true)})
+@Document(collection = "payments")
 public class Payment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	private String id;
 
-    private Long orderId;
-    private BigDecimal amount;
-    private String currency;
+	private String orderId;
+	private BigDecimal amount;
+	private String currency;
 
-    @Enumerated(EnumType.STRING)
-    private PaymentStatus status;
+	private PaymentStatus status;
 
-    public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public Long getOrderId() {
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(Long orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 

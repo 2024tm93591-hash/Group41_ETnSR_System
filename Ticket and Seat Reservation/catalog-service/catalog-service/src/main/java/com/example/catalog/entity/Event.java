@@ -1,18 +1,16 @@
 package com.example.catalog.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
-@Table(name = "event")
+@Document(collection = "events")
 public class Event {
 
     @Id
-    private Long eventId;
+    private String eventId;
 
-    @ManyToOne
-    @JoinColumn(name = "venue_id")
     private Venue venue;
 
     private String title;
@@ -20,18 +18,16 @@ public class Event {
     private LocalDateTime eventDate;
     private double basePrice;
 
-    @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
     // Getters and Setters
-    public Long getEventId() {
+    public String getEventId() {
         return eventId;
     }
 
-    public void setEventId(Long eventId) {
+    public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 

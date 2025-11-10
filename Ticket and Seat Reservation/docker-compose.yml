@@ -1,4 +1,29 @@
 services:
+  mongo:
+    image: mongo:6.0
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  auth-service:
+    build:
+      context: ./auth_service
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - auth-service-data:/app/instance
+    environment:
+      FLASK_APP: app.py
+      FLASK_ENV: production
+      MONGO_URI: "mongodb://root:example@mongo:27017/auth_db?authSource=admin"
+    restart: always
+
   user-service:
     build:
       context: .
@@ -13,6 +38,7 @@ services:
       DB_NAME: user_db
       DB_USER: app_user
       DB_PASS: StrongP@ssw0rd!
+      MONGO_URI: "mongodb://root:example@mongo:27017/user_db?authSource=admin"
       JWT_SECRET: supersecretkey
     depends_on:
       user-db:
@@ -48,17 +74,9 @@ services:
     ports:
       - "3001:3001"
     environment:
-      DB_HOST: catalog-db
-      DB_NAME: catalog_db
-      DB_USER: app_user
-      DB_PASS: StrongP@ssw0rd!
-      # Spring Boot datasource (connects to catalog-db container)
-      SPRING_DATASOURCE_URL: "jdbc:sqlserver://catalog-db:1433;databaseName=catalog_db"
-      SPRING_DATASOURCE_USERNAME: "app_user"
-      SPRING_DATASOURCE_PASSWORD: "StrongP@ssw0rd!"
+      SPRING_DATA_MONGODB_URI: "mongodb://root:example@mongo:27017/catalogdb?authSource=admin"
     depends_on:
-      catalog-db:
-        condition: service_healthy
+      - mongo
 
   catalog-db:
     build:
@@ -94,6 +112,7 @@ services:
       DB_NAME: seating_db
       DB_USER: app_user
       DB_PASS: StrongP@ssw0rd!
+      MONGO_URI: "mongodb://root:example@mongo:27017/seating_db?authSource=admin"
     depends_on:
       seating-db:
         condition: service_healthy
@@ -126,21 +145,13 @@ services:
       - 8.8.8.8
       - 8.8.4.4
     ports:
-      - "3003:3003"
+      - "8081:8081"
     environment:
-      DB_HOST: order-db
-      DB_NAME: order_db
-      DB_USER: app_user
-      DB_PASS: StrongP@ssw0rd!
-      # Spring Boot datasource (connects to order-db container)
-      SPRING_DATASOURCE_URL: "jdbc:sqlserver://order-db:1433;databaseName=order_db"
-      SPRING_DATASOURCE_USERNAME: "app_user"
-      SPRING_DATASOURCE_PASSWORD: "StrongP@ssw0rd!"
+      SPRING_DATA_MONGODB_URI: "mongodb://root:example@mongo:27017/ordersdb?authSource=admin"
+      PAYMENT_SERVICE_URL: "http://payment-service:8082"
     depends_on:
-      order-db:
-        condition: service_healthy
-      seating-service:
-        condition: service_started
+      - mongo
+      - payment-service
 
   order-db:
     build:
@@ -164,25 +175,17 @@ services:
 
   payment-service:
     build:
-      context: .
-      dockerfile: ./payment-service/Dockerfile
+      context: ./payment-service
+      dockerfile: Dockerfile
     dns:
       - 8.8.8.8
       - 8.8.4.4
     ports:
-      - "3004:3004"
+      - "8082:8082"
     environment:
-      DB_HOST: payment-db
-      DB_NAME: payment_db
-      DB_USER: app_user
-      DB_PASS: StrongP@ssw0rd!
-      # Spring Boot datasource (connects to payment-db container)
-      SPRING_DATASOURCE_URL: "jdbc:sqlserver://payment-db:1433;databaseName=payment_db"
-      SPRING_DATASOURCE_USERNAME: "app_user"
-      SPRING_DATASOURCE_PASSWORD: "StrongP@ssw0rd!"
+      SPRING_DATA_MONGODB_URI: "mongodb://root:example@mongo:27017/paymentsdb?authSource=admin"
     depends_on:
-      payment-db:
-        condition: service_healthy
+      - mongo
 
   payment-db:
     build:
@@ -218,6 +221,7 @@ services:
       SMTP_PORT: 587
       SMTP_USER: your-email@example.com
       SMTP_PASS: your-email-password
+      MONGO_URI: "mongodb://root:example@mongo:27017/notification_db?authSource=admin"
 
   # Seed service: runs the seedDataToDB.js script after DBs are healthy
   db-seed:
@@ -231,6 +235,7 @@ services:
       SEED_DB_PASS: StrongP@ssw0rd!
       SEED_DB_PORT: 1433
       SEED_DB_DIALECT: mssql
+      SEED_MONGO_URI: "mongodb://root:example@mongo:27017/seed_db?authSource=admin"
     depends_on:
       catalog-db:
         condition: service_healthy
@@ -244,6 +249,8 @@ services:
         condition: service_healthy
 
 volumes:
+  auth-service-data:
+  mongo-data:
   user-db-data:
   catalog-db-data:
   seating-db-data:

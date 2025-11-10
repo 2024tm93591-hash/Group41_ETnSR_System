@@ -31,7 +31,7 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public Event getEventById(@PathVariable Long id) {
+    public Event getEventById(@PathVariable String id) {
         return eventRepository.findById(id).orElse(null);
     }
 
@@ -41,7 +41,7 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public Event updateEvent(@PathVariable Long id, @RequestBody Event eventDetails) {
+    public Event updateEvent(@PathVariable String id, @RequestBody Event eventDetails) {
         Event event = eventRepository.findById(id).orElseThrow();
         event.setTitle(eventDetails.getTitle());
         event.setEventType(eventDetails.getEventType());
@@ -53,7 +53,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEvent(@PathVariable Long id) {
+    public void deleteEvent(@PathVariable String id) {
         eventRepository.deleteById(id);
     }
 }

@@ -5,13 +5,13 @@ import java.util.List;
 
 public class PlaceOrderRequest {
     @NotNull
-    public Long userId;
+    public String userId;
 
     @NotEmpty
     public List<OrderLine> lines;
 
     public static class OrderLine {
-        @NotNull public Long eventId;
+    @NotNull public String eventId;
         @NotBlank public String seatCode;
         @NotNull public java.math.BigDecimal price;
     }

@@ -18,8 +18,8 @@ public class CatalogPublisher {
 
     public static class EventCreatedEvent {
         private final Object source;
-        private final Long eventId;
-        public EventCreatedEvent(Object source, Long eventId) { this.source = source; this.eventId = eventId; }
-        public Long getEventId() { return eventId; }
+        private final String eventId;
+        public EventCreatedEvent(Object source, String eventId) { this.source = source; this.eventId = eventId; }
+        public String getEventId() { return eventId; }
     }
 }
